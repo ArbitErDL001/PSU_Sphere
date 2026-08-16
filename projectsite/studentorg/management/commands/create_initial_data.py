@@ -14,9 +14,8 @@ class Command(BaseCommand):
         fake = Faker()
 
         for _ in range(count):
-            words = [fake.word() for _ in range(2)] # two words
+            words = [fake.word() for _ in range(2)]
             organization_name = ' '.join(words)
-
             Organization.objects.create(
                 name=organization_name.title(),
                 college=College.objects.order_by('?').first(),
@@ -28,7 +27,6 @@ class Command(BaseCommand):
 
     def create_students(self, count):
         fake = Faker('en_PH')
-
         for _ in range(count):
             Student.objects.create(
                 student_id=f"{fake.random_int(2020,2025)}-{fake.random_int(1,8)}-{fake.random_number(digits=4)}",
@@ -37,13 +35,11 @@ class Command(BaseCommand):
                 middlename=fake.last_name(),
                 program=Program.objects.order_by('?').first()
             )
-
         self.stdout.write(self.style.SUCCESS(
             'Initial data for students created successfully.'))
 
     def create_membership(self, count):
         fake = Faker()
-
         for _ in range(count):
             OrgMember.objects.create(
                 student=Student.objects.order_by('?').first(),
@@ -51,6 +47,5 @@ class Command(BaseCommand):
                 date_joined=fake.date_between(
                     start_date="-2y", end_date="today")
             )
-
         self.stdout.write(self.style.SUCCESS(
             'Initial data for student organization created successfully.'))
