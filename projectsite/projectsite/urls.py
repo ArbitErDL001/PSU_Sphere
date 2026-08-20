@@ -16,17 +16,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.views.generic import TemplateView
-from studentorg.views import HomePageView
+from studentorg.views import dashboard, delete_entity, home, manage_entity
 
 urlpatterns = [
-    path('', HomePageView.as_view(), name='home'),
-    path('index.html', TemplateView.as_view(template_name='index.html'), name='index'),
-    path('components.html', TemplateView.as_view(template_name='components.html'), name='components'),
-    path('forms.html', TemplateView.as_view(template_name='forms.html'), name='forms'),
-    path('tables.html', TemplateView.as_view(template_name='tables.html'), name='tables'),
-    path('notifications.html', TemplateView.as_view(template_name='notifications.html'), name='notifications'),
-    path('typography.html', TemplateView.as_view(template_name='typography.html'), name='typography'),
-    path('icons.html', TemplateView.as_view(template_name='icons.html'), name='icons'),
+    path('', home, name='home'),
+    path('index.html', dashboard, name='index'),
+    path('students/', lambda request: manage_entity(request, 'students'), name='student-list'),
+    path('students/<int:pk>/delete/', lambda request, pk: delete_entity(request, 'students', pk), name='student-delete'),
+    path('members/', lambda request: manage_entity(request, 'members'), name='member-list'),
+    path('members/<int:pk>/delete/', lambda request, pk: delete_entity(request, 'members', pk), name='member-delete'),
+    path('organizations/', lambda request: manage_entity(request, 'organizations'), name='organization-list'),
+    path('organizations/<int:pk>/delete/', lambda request, pk: delete_entity(request, 'organizations', pk), name='organization-delete'),
+    path('programs/', lambda request: manage_entity(request, 'programs'), name='program-list'),
+    path('programs/<int:pk>/delete/', lambda request, pk: delete_entity(request, 'programs', pk), name='program-delete'),
+    path('colleges/', lambda request: manage_entity(request, 'colleges'), name='college-list'),
+    path('colleges/<int:pk>/delete/', lambda request, pk: delete_entity(request, 'colleges', pk), name='college-delete'),
+    path('components.html', lambda request: manage_entity(request, 'students'), name='components'),
+    path('forms.html', lambda request: manage_entity(request, 'members'), name='forms'),
+    path('tables.html', lambda request: manage_entity(request, 'organizations'), name='tables'),
+    path('notifications.html', lambda request: manage_entity(request, 'programs'), name='notifications'),
+    path('typography.html', lambda request: manage_entity(request, 'colleges'), name='typography'),
+    path('icons.html', dashboard, name='icons'),
     path('admin/', admin.site.urls),
 ]

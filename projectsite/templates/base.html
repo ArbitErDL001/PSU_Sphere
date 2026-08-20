@@ -34,7 +34,7 @@
 		<div class="main-header">
 			<div class="logo-header">
 				<a href="{% url 'index' %}" class="logo">
-					Ready Dashboard
+					PSU Sphere
 				</a>
 				<button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -44,13 +44,13 @@
 			<nav class="navbar navbar-header navbar-expand-lg">
 				<div class="container-fluid">
 					
-					<form class="navbar-left navbar-form nav-search mr-md-3" action="">
+					<form class="navbar-left navbar-form nav-search mr-md-3" method="get" action="{% if request.resolver_match.url_name == 'index' %}{% url 'student-list' %}{% else %}{{ request.path }}{% endif %}">
 						<div class="input-group">
-							<input type="text" placeholder="Search ..." class="form-control">
+							<input type="search" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Search ..." class="form-control" aria-label="Search records">
 							<div class="input-group-append">
-								<span class="input-group-text">
+								<button type="submit" class="input-group-text border-0" aria-label="Submit search">
 									<i class="la la-search search-icon"></i>
-								</span>
+								</button>
 							</div>
 						</div>
 					</form>
@@ -90,7 +90,7 @@
 											<div class="notif-icon notif-success"> <i class="la la-comment"></i> </div>
 											<div class="notif-content">
 												<span class="block">
-													Rahmad commented on Admin
+													AEDL commented on Admin
 												</span>
 												<span class="time">12 minutes ago</span> 
 											</div>
@@ -101,7 +101,7 @@
 											</div>
 											<div class="notif-content">
 												<span class="block">
-													Reza send messages to you
+													Kira send messages to you
 												</span>
 												<span class="time">12 minutes ago</span> 
 											</div>
@@ -110,7 +110,7 @@
 											<div class="notif-icon notif-danger"> <i class="la la-heart"></i> </div>
 											<div class="notif-content">
 												<span class="block">
-													Farrah liked Admin
+													Yamizora liked Admin
 												</span>
 												<span class="time">17 minutes ago</span> 
 											</div>
@@ -123,14 +123,14 @@
 							</ul>
 						</li>
 						<li class="nav-item dropdown">
-							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="{% static 'img/profile.jpg' %}" alt="user-img" width="36" class="img-circle"><span >Hizrian</span></span> </a>
+							<a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false"> <img src="{% static 'img/icon.png' %}" alt="user-img" width="36" class="img-circle"><span >AEDL-sama</span></span> </a>
 							<ul class="dropdown-menu dropdown-user">
 								<li>
 									<div class="user-box">
-										<div class="u-img"><img src="{% static 'img/profile.jpg' %}" alt="user"></div>
+										<div class="u-img"><img src="{% static 'img/icon.png' %}" alt="user"></div>
 										<div class="u-text">
 											<h4>AEDL</h4>
-											<p class="text-muted">hello@themekita.com</p><a href="#" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
+											<p class="text-muted">hello@aedlproductions.com</p><a href="#" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
 										</div>
 									</li>
 									<div class="dropdown-divider"></div>
@@ -152,12 +152,12 @@
 				<div class="scrollbar-inner sidebar-wrapper">
 					<div class="user">
 						<div class="photo">
-							<img src="{% static 'img/profile.jpg' %}">
+							<img src="{% static 'img/icon.png' %}">
 						</div>
 						<div class="info">
 							<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
 								<span>
-									Hizrian
+									AEDL-sama
 									<span class="user-level">Administrator</span>
 									<span class="caret"></span>
 								</span>
@@ -193,53 +193,11 @@
 								<span class="badge badge-count">5</span>
 							</a>
 						</li>
-						<li class="nav-item">
-							<a href="{% url 'components' %}">
-								<i class="la la-table"></i>
-								<p>Components</p>
-								<span class="badge badge-count">14</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="{% url 'forms' %}">
-								<i class="la la-keyboard-o"></i>
-								<p>Forms</p>
-								<span class="badge badge-count">50</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="{% url 'tables' %}">
-								<i class="la la-th"></i>
-								<p>Tables</p>
-								<span class="badge badge-count">6</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="{% url 'notifications' %}">
-								<i class="la la-bell"></i>
-								<p>Notifications</p>
-								<span class="badge badge-success">3</span>
-							</a>
-						</li>
-						<li class="nav-item active">
-							<a href="{% url 'typography' %}">
-								<i class="la la-font"></i>
-								<p>Typography</p>
-								<span class="badge badge-danger">25</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="{% url 'icons' %}">
-								<i class="la la-fonticons"></i>
-								<p>Icons</p>
-							</a>
-						</li>
-						<li class="nav-item update-pro">
-							<button  data-toggle="modal" data-target="#modalUpdate">
-								<i class="la la-hand-pointer-o"></i>
-								<p>Update To Pro</p>
-							</button>
-						</li>
+						<li class="nav-item"><a href="{% url 'student-list' %}"><i class="la la-users"></i><p>Students</p></a></li>
+						<li class="nav-item"><a href="{% url 'member-list' %}"><i class="la la-sitemap"></i><p>Org members</p></a></li>
+						<li class="nav-item"><a href="{% url 'organization-list' %}"><i class="la la-institution"></i><p>Organizations</p></a></li>
+						<li class="nav-item"><a href="{% url 'program-list' %}"><i class="la la-book"></i><p>Programs</p></a></li>
+						<li class="nav-item"><a href="{% url 'college-list' %}"><i class="la la-building"></i><p>Colleges</p></a></li>
 					</ul>
 				</div>
 			</div>

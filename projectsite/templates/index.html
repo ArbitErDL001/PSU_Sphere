@@ -1,3 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - PSU Sphere{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+	<div class="d-flex align-items-center justify-content-between mb-4">
+		<div>
+			<p class="text-muted mb-1">Student organization portal</p>
+			<h4 class="page-title mb-0">Dashboard</h4>
+		</div>
+		<a href="{% url 'student-list' %}" class="btn btn-primary"><i class="la la-plus"></i> Add student</a>
+	</div>
+
+	<div class="row">
+		<div class="col-md-3"><div class="card card-stats card-warning"><div class="card-body"><div class="row"><div class="col-5"><div class="icon-big text-center"><i class="la la-users"></i></div></div><div class="col-7"><div class="numbers"><p class="card-category">Students</p><h4 class="card-title">{{ student_count }}</h4></div></div></div></div></div></div>
+		<div class="col-md-3"><div class="card card-stats card-success"><div class="card-body"><div class="row"><div class="col-5"><div class="icon-big text-center"><i class="la la-sitemap"></i></div></div><div class="col-7"><div class="numbers"><p class="card-category">Org members</p><h4 class="card-title">{{ member_count }}</h4></div></div></div></div></div></div>
+		<div class="col-md-3"><div class="card card-stats card-danger"><div class="card-body"><div class="row"><div class="col-5"><div class="icon-big text-center"><i class="la la-institution"></i></div></div><div class="col-7"><div class="numbers"><p class="card-category">Organizations</p><h4 class="card-title">{{ organization_count }}</h4></div></div></div></div></div></div>
+		<div class="col-md-3"><div class="card card-stats card-primary"><div class="card-body"><div class="row"><div class="col-5"><div class="icon-big text-center"><i class="la la-book"></i></div></div><div class="col-7"><div class="numbers"><p class="card-category">Programs</p><h4 class="card-title">{{ program_count }}</h4></div></div></div></div></div></div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-7">
+			<div class="card">
+				<div class="card-header d-flex justify-content-between align-items-center"><div><div class="card-title mb-1">Organizations</div><div class="card-category">Membership across registered organizations.</div></div><a href="{% url 'organization-list' %}" class="btn btn-sm btn-outline-primary">Manage</a></div>
+				<div class="card-body p-0"><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>Organization</th><th>College</th><th class="text-right">Members</th></tr></thead><tbody>{% for organization in organizations %}<tr><td><strong>{{ organization.name }}</strong></td><td>{{ organization.college|default:"Not assigned" }}</td><td class="text-right"><span class="badge badge-primary">{{ organization.member_count }}</span></td></tr>{% empty %}<tr><td colspan="3" class="text-center text-muted py-4">No organizations registered yet.</td></tr>{% endfor %}</tbody></table></div></div>
+			</div>
+		</div>
+		<div class="col-lg-5">
+			<div class="card">
+				<div class="card-header d-flex justify-content-between align-items-center"><div><div class="card-title mb-1">Recent students</div><div class="card-category">Latest additions to the directory.</div></div><a href="{% url 'student-list' %}" class="btn btn-sm btn-outline-primary">Manage</a></div>
+				<div class="card-body"><div class="list-group list-group-flush">{% for student in recent_students %}<div class="list-group-item px-0 d-flex justify-content-between align-items-center"><div><strong>{{ student.lastname }}, {{ student.firstname }}</strong><small class="d-block text-muted">{{ student.student_id }} · {{ student.program }}</small></div><i class="la la-angle-right text-muted"></i></div>{% empty %}<p class="text-muted mb-0">No students registered yet.</p>{% endfor %}</div></div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
 {% load static %}
 {% load static %}
 <!DOCTYPE html>
@@ -72,7 +109,7 @@
 											<div class="notif-icon notif-success"> <i class="la la-comment"></i> </div>
 											<div class="notif-content">
 												<span class="block">
-													Rahmad commented on Admin
+													AEDL commented on Admin
 												</span>
 												<span class="time">12 minutes ago</span> 
 											</div>
@@ -83,7 +120,7 @@
 											</div>
 											<div class="notif-content">
 												<span class="block">
-													Reza send messages to you
+													Kira send messages to you
 												</span>
 												<span class="time">12 minutes ago</span> 
 											</div>
@@ -92,7 +129,7 @@
 											<div class="notif-icon notif-danger"> <i class="la la-heart"></i> </div>
 											<div class="notif-content">
 												<span class="block">
-													Farrah liked Admin
+													Yamizora liked Admin
 												</span>
 												<span class="time">17 minutes ago</span> 
 											</div>
@@ -111,8 +148,8 @@
 									<div class="user-box">
 										<div class="u-img"><img src="{% static 'img/profile.jpg' %}" alt="user"></div>
 										<div class="u-text">
-											<h4>Hizrian</h4>
-											<p class="text-muted">hello@themekita.com</p><a href="#" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
+											<h4>AEDL</h4>
+											<p class="text-muted">hello@aedlproductions.com</p><a href="#" class="btn btn-rounded btn-danger btn-sm">View Profile</a></div>
 										</div>
 									</li>
 									<div class="dropdown-divider"></div>
@@ -139,7 +176,7 @@
 						<div class="info">
 							<a class="" data-toggle="collapse" href="#collapseExample" aria-expanded="true">
 								<span>
-									Hizrian
+									AEDL-sama
 									<span class="user-level">Administrator</span>
 									<span class="caret"></span>
 								</span>
@@ -306,82 +343,6 @@
 									</div>
 								</div>
 							</div>
-<!-- 							<div class="col-md-3">
-								<div class="card card-stats">
-									<div class="card-body ">
-										<div class="row">
-											<div class="col-5">
-												<div class="icon-big text-center icon-warning">
-													<i class="la la-pie-chart text-warning"></i>
-												</div>
-											</div>
-											<div class="col-7 d-flex align-items-center">
-												<div class="numbers">
-													<p class="card-category">Number</p>
-													<h4 class="card-title">150GB</h4>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="card card-stats">
-									<div class="card-body ">
-										<div class="row">
-											<div class="col-5">
-												<div class="icon-big text-center">
-													<i class="la la-bar-chart text-success"></i>
-												</div>
-											</div>
-											<div class="col-7 d-flex align-items-center">
-												<div class="numbers">
-													<p class="card-category">Revenue</p>
-													<h4 class="card-title">$ 1,345</h4>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="card card-stats">
-									<div class="card-body">
-										<div class="row">
-											<div class="col-5">
-												<div class="icon-big text-center">
-													<i class="la la-times-circle-o text-danger"></i>
-												</div>
-											</div>
-											<div class="col-7 d-flex align-items-center">
-												<div class="numbers">
-													<p class="card-category">Errors</p>
-													<h4 class="card-title">23</h4>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<div class="card card-stats">
-									<div class="card-body">
-										<div class="row">
-											<div class="col-5">
-												<div class="icon-big text-center">
-													<i class="la la-heart-o text-primary"></i>
-												</div>
-											</div>
-											<div class="col-7 d-flex align-items-center">
-												<div class="numbers">
-													<p class="card-category">Followers</p>
-													<h4 class="card-title">+45K</h4>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div> -->
 						</div>
 						<div class="row">
 							<div class="col-md-3">
