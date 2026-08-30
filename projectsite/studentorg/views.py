@@ -43,6 +43,10 @@ def manage_entity(request, entity):
         form.save()
         messages.success(request, f"{title[:-1] if title.endswith('s') else title} added successfully.")
         return redirect(route_name)
+    if entity == "organizations" and request.method == "POST":
+        return render(request, "org_form.html", {"form": form, "title": "Add organization"})
+    if entity == "organizations" and request.GET.get("form") == "add":
+        return render(request, "org_form.html", {"form": form, "title": "Add organization"})
     query = request.GET.get("q", "").strip()
     objects = model.objects.all()
     search_fields = {
@@ -101,8 +105,10 @@ def manage_entity(request, entity):
 
 def delete_entity(request, entity, pk):
     model, _, title, _, route_name, _ = ENTITY_CONFIG[entity]
+    item = get_object_or_404(model, pk=pk)
+    if entity == "organizations" and request.method != "POST":
+        return render(request, "org_del.html", {"organization": item})
     if request.method == "POST":
-        item = get_object_or_404(model, pk=pk)
         item.delete()
         messages.success(request, f"{title[:-1] if title.endswith('s') else title} deleted.")
     return redirect(route_name)

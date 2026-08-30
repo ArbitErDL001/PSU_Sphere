@@ -15,12 +15,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from django.views.generic import RedirectView
 from studentorg.views import dashboard, delete_entity, home, manage_entity
 
 urlpatterns = [
-    path('', home, name='home'),
+    path('', RedirectView.as_view(url='/accounts/login/', permanent=False), name='home'),
     path('index.html', dashboard, name='index'),
+    path('accounts/', include('allauth.urls')),
     path('students/', lambda request: manage_entity(request, 'students'), name='student-list'),
     path('students/<int:pk>/delete/', lambda request, pk: delete_entity(request, 'students', pk), name='student-delete'),
     path('members/', lambda request: manage_entity(request, 'members'), name='member-list'),

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }} - PSU Sphere{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div><p class="text-muted mb-1">Organization management</p><h4 class="page-title mb-0">{{ title }}</h4></div>
+        <a href="{% url 'organization-list' %}" class="btn btn-outline-secondary"><i class="la la-arrow-left"></i> Back to organizations</a>
+    </div>
+
+    <div class="row"><div class="col-lg-7"><div class="card"><div class="card-header"><div class="card-title">Organization details</div><div class="card-category">Complete the fields below to save an organization.</div></div><div class="card-body"><form method="post" novalidate>{% csrf_token %}{% for field in form %}<div class="form-group"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% for error in field.errors %}<small class="text-danger d-block">{{ error }}</small>{% endfor %}</div>{% endfor %}{% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}<div class="d-flex justify-content-end"><a href="{% url 'organization-list' %}" class="btn btn-light mr-2">Cancel</a><button type="submit" class="btn btn-primary"><i class="la la-save"></i> Save organization</button></div></form></div></div></div></div>
+</div>
+{% endblock %}

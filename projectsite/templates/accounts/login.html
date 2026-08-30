@@ -1,0 +1,101 @@
+{% load socialaccount %}
+{% load static %}
+
+{% get_providers as socialaccount_providers %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>PSU Sign In</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i|Monoton" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+    <div class="tile">
+        <div class="tile-header">
+            <h2>PSU Sphere</h2>
+        </div>
+
+        <div class="tile-body">
+            <form id="form" method="post" action="{% url 'account_login' %}">
+                {% csrf_token %}
+
+                {% if socialaccount_providers %}
+                    <div class="social-row">
+                        {% for provider in socialaccount_providers %}
+                            {% if provider.id == 'google' %}
+                                <a href="{% provider_login_url 'google' %}" class="social-btn" aria-label="Continue with Google">
+                                    <i class="fa-brands fa-google"></i>
+                                </a>
+                            {% elif provider.id == 'github' %}
+                                <a href="{% provider_login_url 'github' %}" class="social-btn" aria-label="Continue with GitHub">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="divider"><span>or sign in</span></div>
+                {% else %}
+                    <div class="divider"><span>sign in</span></div>
+                {% endif %}
+
+                {% if form.non_field_errors %}
+                    <ul class="errorlist">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                <label class="form-input">
+                    <i class="material-icons">person</i>
+                    <input type="text" name="login" id="id_login" autofocus required>
+                    <span class="label">Username or Email</span>
+                    <span class="underline"></span>
+                </label>
+
+                <label class="form-input">
+                    <i class="material-icons">lock</i>
+                    <input type="password" name="password" id="id_password" required>
+                    <span class="label">Password</span>
+                    <span class="underline"></span>
+                </label>
+
+                <div class="meta-row">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember" checked>
+                        <span>Remember me</span>
+                    </label>
+
+                    <a class="forgot-link" href="{% url 'account_reset_password' %}">Forgot?</a>
+                </div>
+
+                <div class="submit-container clearfix">
+                    <button id="submit" type="submit" class="btn btn-irenic float-right" tabindex="0">
+                        <span>SIGN IN</span>
+                    </button>
+
+                    <div class="login-pending" aria-hidden="true">
+                        <div class="spinner">
+                            <span class="dot1"></span>
+                            <span class="dot2"></span>
+                        </div>
+
+                        <div class="login-granted-content">
+                            <i class="material-icons">done</i>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/js/all.min.js"></script>
+</body>
+</html>
