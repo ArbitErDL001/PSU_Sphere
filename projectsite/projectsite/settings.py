@@ -30,7 +30,8 @@ if LOCAL_ENV_FILE.exists():
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-z3y48shc28zl+)r5^^fopw-eb8f7#-#*5%6_bfquqa2i@nghhx'
+# Use environment variables in real deployment.
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-z3y48shc28zl+)r5^^fopw-eb8f7#-#*5%6_bfquqa2i@nghhx')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -108,6 +109,7 @@ ACCOUNT_SIGNUP_FIELDS = ['username*', 'email*', 'password1*', 'password2*']
 SOCIALACCOUNT_LOGIN_REDIRECT_URL = '/index.html'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
+# Google / GitHub OAuth credentials should be stored in environment variables.
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'APP': {
