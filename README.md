@@ -26,12 +26,17 @@ A Django web application for managing student organizations at **Palawan State U
 
 <img src="https://github.com/ArbitErDL001.png" width="150" alt="ΛΞDL">
 
+<img src="https://github.com/Jezellemaetaneo.png" width="150" alt="Zelle">
+
 **Name:** ΛΞDL
 
 * <a href="mailto:202380330@psu.palawan.edu.ph"><img src="https://img.shields.io/badge/Email-202380330%40psu.palawan.edu.ph-D14836?style=flat-square&logo=gmail&logoColor=white" alt="Email"></a>
 * <a href="https://github.com/ArbitErDL001"><img src="https://img.shields.io/badge/GitHub-ArbitErDL001-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub"></a>
 
+**Name:** Jezellemaetaneo
 
+* <a href="mailto:202380324@psu.palawan.edu.ph"><img src="https://img.shields.io/badge/Email-202380324%40psu.palawan.edu.ph-D14836?style=flat-square&logo=gmail&logoColor=white" alt="Email"></a>
+* <a href="https://github.com/Jezellemaetaneo"><img src="https://img.shields.io/badge/GitHub-Jezellemaetaneo-181717?style=flat-square&logo=github&logoColor=white" alt="GitHub"></a>
 
 ## Project
 
