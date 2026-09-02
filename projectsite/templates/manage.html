@@ -22,8 +22,8 @@
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">Add {{ title|lower|slice:":-1" }}</div>
-                    <div class="card-category">Complete the fields below to save a record.</div>
+                    <div class="card-title">{% if is_edit %}Edit {{ title|lower|slice:":-1" }}{% else %}Add {{ title|lower|slice:":-1" }}{% endif %}</div>
+                    <div class="card-category">{% if is_edit %}Update the selected record below.{% else %}Complete the fields below to save a record.{% endif %}</div>
                 </div>
                 <div class="card-body">
                     <form method="post" novalidate>
@@ -36,7 +36,7 @@
                             </div>
                         {% endfor %}
                         {% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}
-                        <button type="submit" class="btn btn-primary btn-block"><i class="la la-plus"></i> Add record</button>
+                        <button type="submit" class="btn btn-primary btn-block"><i class="la la-{% if is_edit %}save{% else %}plus{% endif %}"></i> {% if is_edit %}Update record{% else %}Add record{% endif %}</button>
                     </form>
                 </div>
             </div>
@@ -49,6 +49,29 @@
                         <div class="card-title mb-1">Current records</div>
                         <div class="card-category">Review or remove saved data.</div>
                     </div>
+                    <form method="get" class="form-inline d-inline-flex flex-wrap justify-content-end">
+                        <input type="search" name="q" value="{{ query }}" placeholder="Search {{ title|lower }}" class="form-control mr-2 mb-2 mb-md-0" aria-label="Search {{ title|lower }}">
+                        {% if entity == 'students' %}
+                            <select name="sort" class="form-control mr-2 mb-2 mb-md-0" aria-label="Sort students">
+                                <option value="id"{% if sort == 'id' %} selected{% endif %}>Student ID</option>
+                                <option value="name"{% if sort == 'name' %} selected{% endif %}>Name</option>
+                                <option value="program"{% if sort == 'program' %} selected{% endif %}>Program</option>
+                                <option value="newest"{% if sort == 'newest' %} selected{% endif %}>Newest</option>
+                            </select>
+                        {% elif entity == 'members' %}
+                            <select name="sort" class="form-control mr-2 mb-2 mb-md-0" aria-label="Sort members">
+                                <option value="student"{% if sort == 'student' %} selected{% endif %}>Student</option>
+                                <option value="organization"{% if sort == 'organization' %} selected{% endif %}>Organization</option>
+                                <option value="newest"{% if sort == 'newest' %} selected{% endif %}>Newest</option>
+                            </select>
+                        {% elif entity == 'colleges' %}
+                            <select name="sort" class="form-control mr-2 mb-2 mb-md-0" aria-label="Sort colleges">
+                                <option value="name"{% if sort == 'name' %} selected{% endif %}>Name</option>
+                                <option value="newest"{% if sort == 'newest' %} selected{% endif %}>Newest</option>
+                            </select>
+                        {% endif %}
+                        <button type="submit" class="btn btn-outline-primary"><i class="la la-search"></i> Search</button>
+                    </form>
                 </div>
                 <div class="card-body p-0">
                     {% if objects %}
@@ -73,7 +96,18 @@
                                     {% elif entity == 'programs' %}<td><strong>{{ item.prog_name }}</strong></td><td>{{ item.college }}</td>
                                     {% else %}<td><strong>{{ item.college_name }}</strong></td>{% endif %}
                                     <td class="text-right">
-                                        <form method="post" action="{% url delete_route item.pk %}" onsubmit="return confirm('Delete this record?');">
+                                        {% if entity == 'students' %}
+                                            <a href="{% url 'student-edit' item.pk %}" class="btn btn-link text-primary p-0 mr-2" title="Edit record"><i class="la la-edit"></i></a>
+                                        {% elif entity == 'members' %}
+                                            <a href="{% url 'member-edit' item.pk %}" class="btn btn-link text-primary p-0 mr-2" title="Edit record"><i class="la la-edit"></i></a>
+                                        {% elif entity == 'organizations' %}
+                                            <a href="{% url 'organization-edit' item.pk %}" class="btn btn-link text-primary p-0 mr-2" title="Edit record"><i class="la la-edit"></i></a>
+                                        {% elif entity == 'programs' %}
+                                            <a href="{% url 'program-edit' item.pk %}" class="btn btn-link text-primary p-0 mr-2" title="Edit record"><i class="la la-edit"></i></a>
+                                        {% else %}
+                                            <a href="{% url 'college-edit' item.pk %}" class="btn btn-link text-primary p-0 mr-2" title="Edit record"><i class="la la-edit"></i></a>
+                                        {% endif %}
+                                        <form method="post" action="{% url delete_route item.pk %}" onsubmit="return confirm('Delete this record?');" class="d-inline-block">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-link text-danger p-0" title="Delete record"><i class="la la-trash"></i></button>
                                         </form>

@@ -17,21 +17,26 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
-from studentorg.views import dashboard, delete_entity, home, manage_entity
+from studentorg.views import dashboard, delete_entity, edit_entity, home, manage_entity
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/accounts/login/', permanent=False), name='home'),
     path('index.html', dashboard, name='index'),
     path('accounts/', include('allauth.urls')),
     path('students/', lambda request: manage_entity(request, 'students'), name='student-list'),
+    path('students/<int:pk>/edit/', lambda request, pk: edit_entity(request, 'students', pk), name='student-edit'),
     path('students/<int:pk>/delete/', lambda request, pk: delete_entity(request, 'students', pk), name='student-delete'),
     path('members/', lambda request: manage_entity(request, 'members'), name='member-list'),
+    path('members/<int:pk>/edit/', lambda request, pk: edit_entity(request, 'members', pk), name='member-edit'),
     path('members/<int:pk>/delete/', lambda request, pk: delete_entity(request, 'members', pk), name='member-delete'),
     path('organizations/', lambda request: manage_entity(request, 'organizations'), name='organization-list'),
+    path('organizations/<int:pk>/edit/', lambda request, pk: edit_entity(request, 'organizations', pk), name='organization-edit'),
     path('organizations/<int:pk>/delete/', lambda request, pk: delete_entity(request, 'organizations', pk), name='organization-delete'),
     path('programs/', lambda request: manage_entity(request, 'programs'), name='program-list'),
+    path('programs/<int:pk>/edit/', lambda request, pk: edit_entity(request, 'programs', pk), name='program-edit'),
     path('programs/<int:pk>/delete/', lambda request, pk: delete_entity(request, 'programs', pk), name='program-delete'),
     path('colleges/', lambda request: manage_entity(request, 'colleges'), name='college-list'),
+    path('colleges/<int:pk>/edit/', lambda request, pk: edit_entity(request, 'colleges', pk), name='college-edit'),
     path('colleges/<int:pk>/delete/', lambda request, pk: delete_entity(request, 'colleges', pk), name='college-delete'),
     path('components.html', lambda request: manage_entity(request, 'students'), name='components'),
     path('forms.html', lambda request: manage_entity(request, 'members'), name='forms'),

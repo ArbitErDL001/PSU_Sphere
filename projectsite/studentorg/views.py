@@ -62,6 +62,17 @@ def manage_entity(request, entity):
             search_query |= Q(**{f"{field}__icontains": query})
         objects = objects.filter(search_query)
     sort_options = {
+        "students": {
+            "id": "student_id",
+            "name": "lastname",
+            "program": "program__prog_name",
+            "newest": "-created_at",
+        },
+        "members": {
+            "student": "student__lastname",
+            "organization": "organization__name",
+            "newest": "-created_at",
+        },
         "organizations": {
             "name": "name",
             "college": "college__college_name",
@@ -72,10 +83,14 @@ def manage_entity(request, entity):
             "college": "college__college_name",
             "newest": "-created_at",
         },
+        "colleges": {
+            "name": "college_name",
+            "newest": "-created_at",
+        },
     }
     sort = request.GET.get("sort", "name")
     if entity not in sort_options or sort not in sort_options[entity]:
-        sort = "name"
+        sort = "name" if entity in sort_options else "name"
     objects = objects.order_by(sort_options.get(entity, {}).get(sort, order_field))
     if entity == "members":
         objects = objects.select_related("student", "organization")
@@ -101,6 +116,49 @@ def manage_entity(request, entity):
         "query": query,
         "sort": sort,
     })
+
+
+def edit_entity(request, entity, pk):
+    model, form_class, title, _, route_name, delete_route = ENTITY_CONFIG[entity]
+    item = get_object_or_404(model, pk=pk)
+    form = form_class(request.POST or None, instance=item)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, f"{title[:-1] if title.endswith('s') else title} updated successfully.")
+        return redirect(route_name)
+
+    objects = model.objects.all()
+    if entity == "members":
+        objects = objects.select_related("student", "organization")
+    elif entity == "students":
+        objects = objects.select_related("program", "program__college")
+    elif entity == "programs":
+        objects = objects.select_related("college")
+    elif entity == "organizations":
+        objects = objects.select_related("college")
+
+    page_obj = Paginator(objects, 10).get_page(1)
+    template_name = {
+        "organizations": "org_form.html",
+    }.get(entity, "manage.html")
+
+    context = {
+        "title": f"Edit {title[:-1] if title.endswith('s') else title}",
+        "entity": entity,
+        "form": form,
+        "route_name": route_name,
+        "delete_route": delete_route,
+        "item": item,
+        "is_edit": True,
+        "objects": page_obj.object_list,
+        "page_obj": page_obj,
+        "query": "",
+        "sort": "name",
+    }
+    if entity == "organizations":
+        context["title"] = "Edit organization"
+    return render(request, template_name, context)
 
 
 def delete_entity(request, entity, pk):
