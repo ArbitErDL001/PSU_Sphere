@@ -18,9 +18,45 @@ A Django web application for managing student organizations at **Palawan State U
 * Python
 * Django
 * SQLite
+* Docker
 * Faker
 * Git
 * GitHub
+
+## Run with Docker
+
+Docker Desktop is required. From the Django project directory:
+
+```powershell
+cd projectsite
+docker compose up --build
+```
+
+Open [http://localhost:8000](http://localhost:8000) after the container starts.
+
+To run in the background or stop the app:
+
+```powershell
+docker compose up --build -d
+docker compose logs -f web
+docker compose down
+```
+
+To publish the image, tag it with your Docker Hub repository and push it:
+
+```powershell
+docker build -t yourusername/psusphere:latest .
+docker push yourusername/psusphere:latest
+```
+
+On another computer, replace `yourusername` in `projectsite/for_client/docker-compose.yml`, then run:
+
+```powershell
+cd projectsite/for_client
+docker compose up -d
+```
+
+The client setup stores its SQLite database in a Docker volume and does not require the source code.
 
 ## About the Author
 

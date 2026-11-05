@@ -1,0 +1,14 @@
+services:
+  web:
+    image: yourusername/psusphere:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - django_data:/data
+    environment:
+      DEBUG: "1"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,[::1]"
+      SQLITE_PATH: "/data/db.sqlite3"
+
+volumes:
+  django_data:

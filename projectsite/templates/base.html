@@ -6,6 +6,13 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title>{% block title %}PSU Sphere{% endblock %}</title>
 	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+	<meta name="theme-color" content="#1572e8">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="default">
+	<link rel="manifest" href="{% static 'manifest.json' %}">
+	<link rel="apple-touch-icon" href="{% static 'img/icon.png' %}">
+	<link rel="icon" type="image/png" href="{% static 'img/icon.png' %}">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="{% static 'css/ready.css' %}">
@@ -270,5 +277,12 @@
 <script src="{% static 'js/plugin/chart-circle/circles.min.js' %}"></script>
 <script src="{% static 'js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
 <script src="{% static 'js/ready.min.js' %}"></script>
+<script>
+	if ("serviceWorker" in navigator) {
+		window.addEventListener("load", function () {
+			navigator.serviceWorker.register("{% url 'service-worker' %}");
+		});
+	}
+</script>
 {% block extra_js %}{% endblock %}
 </html>

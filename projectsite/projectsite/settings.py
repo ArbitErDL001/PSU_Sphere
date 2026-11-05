@@ -34,9 +34,16 @@ if LOCAL_ENV_FILE.exists():
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-z3y48shc28zl+)r5^^fopw-eb8f7#-#*5%6_bfquqa2i@nghhx')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', '1') == '1'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'psusphere.pythonanywhere.com', 'testserver']
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get(
+        'DJANGO_ALLOWED_HOSTS',
+        '127.0.0.1,localhost,psusphere.pythonanywhere.com,testserver',
+    ).split(',')
+    if host.strip()
+]
 
 if 'pythonanywhere' in socket.gethostname().lower():
     SITE_ID = 2
@@ -134,7 +141,7 @@ SOCIALACCOUNT_PROVIDERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.environ.get('SQLITE_PATH', BASE_DIR / 'db.sqlite3'),
     }
 }
 

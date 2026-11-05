@@ -17,10 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
+from studentorg.pwa import service_worker
 from studentorg.views import dashboard, delete_entity, edit_entity, home, manage_entity
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/accounts/login/', permanent=False), name='home'),
+    path('service-worker.js', service_worker, name='service-worker'),
     path('index.html', dashboard, name='index'),
     path('accounts/', include('allauth.urls')),
     path('students/', lambda request: manage_entity(request, 'students'), name='student-list'),
